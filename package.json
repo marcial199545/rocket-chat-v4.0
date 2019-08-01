@@ -1,12 +1,26 @@
 {
-  "name": "rocket-chat-v3.0",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "name": "rocket-chat-v3.0",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start_auth_server": "npm run build --prefix auth && npm start --prefix auth",
+        "start_notification_server": "npm run build --prefix notifications && npm start --prefix notifications",
+        "start_auth_server_dev": "npm run dev --prefix auth",
+        "start_notifications_server_dev": "npm run dev --prefix notifications",
+        "start_client_dev": "npm start --prefix client",
+        "dev": "concurrently \"npm run start_auth_server_dev\" \"npm run start_notifications_server_dev\" \"npm run start_client_dev\"",
+        "dev-auth": "concurrently \"npm run start_auth_server_dev\" \"npm run start_client_dev\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "concurrently": "^4.1.1"
+    },
+    "devDependencies": {
+        "@types/node": "^12.6.0",
+        "lodash": ">=4.17.13"
+    }
 }
