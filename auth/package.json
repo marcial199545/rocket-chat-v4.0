@@ -1,0 +1,49 @@
+{
+    "name": "auth",
+    "version": "1.0.0",
+    "description": "authentification service",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "config": "^3.1.0",
+        "cookie-parser": "^1.4.4",
+        "express": "^4.17.1",
+        "express-validator": "^6.1.1",
+        "gravatar": "^1.8.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.6.3",
+        "request": "^2.88.0",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {
+        "@types/bcryptjs": "^2.4.2",
+        "@types/body-parser": "^1.17.0",
+        "@types/config": "0.0.34",
+        "@types/cookie-parser": "^1.4.1",
+        "@types/express": "^4.17.0",
+        "@types/gravatar": "^1.8.0",
+        "@types/jsonwebtoken": "^8.3.2",
+        "@types/mongoose": "^5.5.7",
+        "@types/node": "^12.0.12",
+        "@types/request": "^2.48.1",
+        "@types/uuid": "^3.4.5",
+        "lodash": ">=4.17.13",
+        "mem": ">=4.0.0",
+        "ncp": "^2.0.0",
+        "nodemon": "^1.19.1",
+        "rimraf": "^2.6.3",
+        "ts-loader": "^6.0.4",
+        "ts-node": "^8.3.0",
+        "typescript": "^3.5.2",
+        "webpack": "^4.38.0",
+        "webpack-cli": "^3.3.6",
+        "webpack-node-externals": "^1.7.2"
+    }
+}
