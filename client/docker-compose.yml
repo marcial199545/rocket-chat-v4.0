@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+    notifications-service:
+        image: notifications_noti-serv
+        container_name: notifications-service
+        ports:
+            - 5001:5001
+        restart: always
+        depends_on:
+            - mongo
+        links:
+            - mongo
+    auth-service:
+        image: auth_api-auth
+        container_name: auth-service
+        ports:
+            - 5000:5000
+        restart: always
+        depends_on:
+            - mongo
+        links:
+            - mongo
+    mongo:
+        image: mongo
+        restart: always
+        volumes:
+            - mongodata:/data/db
+    nginx:
+        build: .
+        restart: always
+        ports:
+            - 80:80
+        depends_on:
+            - notifications-service
+            - auth-service
+volumes:
+    mongodata:

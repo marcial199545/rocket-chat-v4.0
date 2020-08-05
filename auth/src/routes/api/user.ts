@@ -101,8 +101,7 @@ router.post(
                 return res.status(400).json({ errors: [{ msg: "Contact do not exist" }] });
             }
             const response = {
-                contact,
-                userId: req.user.id
+                contact
             };
             res.send(response);
         } catch (error) {

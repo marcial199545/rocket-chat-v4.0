@@ -3,13 +3,28 @@ import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
 import User from "../users/User";
 import Chat from "../notifications/Chat";
+import { socket } from "../notifications/ChatForm";
 import PropTypes from "prop-types";
 import { clearMessages } from "../../actions/messages";
 import { FormattedMessage } from "react-intl";
-const Dashboard = ({ loading, clearMessages }: { loading?: boolean; clearMessages?: any }) => {
+import { joinOwnRoom } from "../../actions/sockets";
+const Dashboard = ({
+    loading,
+    clearMessages,
+    user,
+    joinOwnRoom
+}: {
+    loading?: boolean;
+    clearMessages?: any;
+    user: any;
+    joinOwnRoom: any;
+}) => {
     useEffect(() => {
         clearMessages();
     });
+    if (!loading && user !== null) {
+        joinOwnRoom(socket, user.contactId);
+    }
     return loading ? (
         <Spinner />
     ) : (
@@ -28,14 +43,16 @@ const Dashboard = ({ loading, clearMessages }: { loading?: boolean; clearMessage
 };
 Dashboard.propTypes = {
     loading: PropTypes.bool,
-    clearMessages: PropTypes.func
+    clearMessages: PropTypes.func,
+    joinOwnRoom: PropTypes.func
 };
 
 const mapStateToProps = (state: any) => ({
-    loading: state.auth.loading
+    loading: state.auth.loading,
+    user: state.auth.user
 });
 
 export default connect(
     mapStateToProps,
-    { clearMessages }
+    { clearMessages, joinOwnRoom }
 )(Dashboard);

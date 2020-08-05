@@ -27,59 +27,45 @@ router.post("/", async (req, res) => {
 // @access  Private
 router.post("/add/contact", async (req: any, res) => {
     try {
-        const { contact: contactInfo, userId } = req.body;
-        let notificationUser: any = await UserNotification.findById(userId, { contacts: 1 });
-        if (
-            notificationUser.contacts.find((contact: any) => {
-                return contact.contactProfile.email === contactInfo.email;
-            })
-        ) {
-            return res.status(400).json({
-                errors: [
-                    {
-                        msg: "Friend Request already sent",
-                        type: "warning",
-                        alertId: "addContact-alert-requestRepeated"
-                    }
-                ]
-            });
-        }
-        let contactModel = {
-            contactProfile: contactInfo
+        const { contactRequested, contactRequester } = req.body;
+        // NOTE notifications of the requester user
+        let notificationCurrentUser: any = await UserNotification.findById(contactRequester._id, { contacts: 1 });
+        // if (
+        //     notificationCurrentUser.contacts.find((contact: any) => {
+        //         return contact.contactProfile.email === contactRequested.email;
+        //     })
+        // ) {
+        //     return res.status(400).json({
+        //         errors: [
+        //             {
+        //                 msg: "Friend Request already sent",
+        //                 type: "warning",
+        //                 alertId: "addContact-alert-requestRepeated"
+        //             }
+        //         ]
+        //     });
+        // }
+        // NOTE saving the contact on the requester user
+        let contactRequesterModel = {
+            contactProfile: contactRequested
         };
-        notificationUser.contacts.push(contactModel);
-        await notificationUser.save();
+        notificationCurrentUser.contacts.push(contactRequesterModel);
+        await notificationCurrentUser.save();
 
-        res.json(contactInfo);
+        // NOTE saving the contact on the requested user
+        // NOTE notifications of the user requested
+        let notificationRequestedUser: any = await UserNotification.findById(contactRequested._id, { contacts: 1 });
+        let contactRequestedModel = {
+            contactProfile: contactRequester,
+            status: "requested"
+        };
+        notificationRequestedUser.contacts.push(contactRequestedModel);
+        await notificationRequestedUser.save();
+        res.json("saved");
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Server error");
     }
-});
-// @route   POST api/notifications/add/contact/request
-// @desc    Add a contact request
-// @access  Private
-router.post("/add/contact/request", async (req: any, res) => {
-    const { requestedId: userRequestedId } = req.body;
-    const {
-        name: requesterName,
-        email: requesterEmail,
-        avatar: requesterAvatar,
-        _id: requesterId
-    } = req.body.requesterInfo;
-    let notificationUser: any = await UserNotification.findById(userRequestedId, { contacts: 1 });
-    let contactModel = {
-        contactProfile: {
-            name: requesterName,
-            email: requesterEmail,
-            _id: requesterId,
-            avatar: requesterAvatar
-        },
-        status: "requested"
-    };
-    notificationUser.contacts.push(contactModel);
-    await notificationUser.save();
-    res.send("add contact request");
 });
 
 // @route   POST api/notifications/me/contacts

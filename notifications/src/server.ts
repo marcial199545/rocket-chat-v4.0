@@ -40,6 +40,19 @@ io.on("connection", socket => {
     socket.on("SOCKET_LEAVE_ROOM", (joinedRoom: any) => {
         socket.leave(joinedRoom);
     });
+    socket.on("SOCKET_JOIN_OWN_ROOM", (roomId: any) => {
+        socket.join(roomId);
+        io.in(roomId).emit("JOINED_OWN_ROOM", roomId);
+    });
+    socket.on("SOCKET_FRIEND_REQUEST", (data: any) => {
+        const { contactRequested, contactRequester } = data;
+        socket.join(contactRequested.contactId);
+        socket.to(contactRequested.contactId).emit("SOCKET_NEW_FRIEND_REQUEST", contactRequester);
+        // io.in(contactRequested.contactId).emit("SOCKET_NEW_FRIEND_REQUEST", contactRequester);
+        // io.in(contactRequested.contactId).emit("SOCKET_NEW_FRIEND_REQUEST", contactRequester);
+        // io.to(contactRequested.contactId).emit("SOCKET_NEW_FRIEND_REQUEST", contactRequester);
+        // // sending to all clients in 'game' room except sender
+    });
     socket.on("SOCKET_JOIN_ROOM", (roomId: any) => {
         socket.join(roomId);
         io.in(roomId).emit("ROOM_JOINED", roomId);

@@ -49,6 +49,7 @@ const AddContactForm = ({ loading, user, addContact }: { loading: any; user: any
                                 ? "Kontakt E-mail"
                                 : "連絡先メールアドレス"
                         }
+                        autoComplete="false"
                         name="email"
                     />
                 </div>

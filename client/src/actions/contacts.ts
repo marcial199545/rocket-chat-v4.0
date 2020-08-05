@@ -1,5 +1,6 @@
 import { CONTACTS_LOADED, CLEAR_CONTACTS, GROUPS_LOADED, EMPTY_GROUPS } from "./types";
 import { setAlert } from "./alert";
+import { friendRequest } from "./sockets";
 import axios from "axios";
 
 //NOTE add a contact
@@ -13,18 +14,13 @@ export const addContact = (socket: any, email: string) => async (dispatch: any) 
                 setAlert("can not send a request to yourself", "warning", "addContact-alert-requestYourself")
             );
         }
-        await axios.post("/api/notifications/add/contact", contactInfo.data);
-        let reqDataForFriendRequest = {
-            requestedId: contactInfo.data.contact._id,
-            requesterInfo: {
-                _id: currentUserInfo.data._id,
-                name: currentUserInfo.data.name,
-                email: currentUserInfo.data.email,
-                avatar: currentUserInfo.data.avatar
-            }
+        const body = {
+            contactRequested: contactInfo.data.contact,
+            contactRequester: currentUserInfo.data
         };
-        await axios.post("/api/notifications/add/contact/request", reqDataForFriendRequest);
+        await axios.post("/api/notifications/add/contact", body);
         dispatch(setAlert("Friend Request Sent", "success", "addContact-alert-requestSent"));
+        dispatch(friendRequest(socket, body));
     } catch (error) {
         const errors = error.response.data.errors;
         if (errors) {

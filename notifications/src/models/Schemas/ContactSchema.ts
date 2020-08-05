@@ -14,6 +14,9 @@ const ContactSchema = new Schema(
             roomId: {
                 type: String
             },
+            contactId: {
+                type: String
+            },
             _id: {
                 type: Schema.Types.ObjectId,
                 ref: "users"

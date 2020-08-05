@@ -1,7 +1,8 @@
-import { SOCKET_LEAVE_ROOM, SOCKET_JOIN_ROOM, ADD_MESSAGE } from "./types";
+import { SOCKET_LEAVE_ROOM, SOCKET_JOIN_ROOM, ADD_MESSAGE, SOCKET_JOIN_OWN_ROOM, SOCKET_FRIEND_REQUEST } from "./types";
 import { setAlert } from "./alert";
 import axios from "axios";
 import { autoScroll } from "../helpers";
+
 export const leaveRoom = (socket: any, joinedRoom: any) => async (dispatch: any) => {
     try {
         dispatch({ type: SOCKET_LEAVE_ROOM });
@@ -22,12 +23,24 @@ export const joinRoom = (socket: any, roomId: any) => async (dispatch: any) => {
         console.log(error);
     }
 };
+export const joinOwnRoom = (socket: any, roomId: any) => async (dispatch: any) => {
+    try {
+        console.log("joined own room");
+        // await socket.emit(SOCKET_JOIN_OWN_ROOM, roomId);
+        // socket.removeAllListeners();
+        // socket.on("JOINED_OWN_ROOM", (data: any) => {
+        //     dispatch(setAlert(`User joined own room`, "success", "socket-alert-joinedOwnRoom"));
+        // });
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const joinAllRooms = (socket: any, contacts: any, showingGroups?: boolean) => async (dispatch: any) => {
     try {
         if (showingGroups) {
             return console.log("TCL: joinAllRooms -> groups", contacts);
         }
-        console.log("TCL: joinAllRooms -> contacts", contacts);
+        // console.log("TCL: joinAllRooms -> contacts", contacts);
         // dispatch({ type: SOCKET_JOIN_ROOM, payload: roomId });
         // await socket.emit(SOCKET_JOIN_ROOM, roomId);
         // socket.removeAllListeners();
@@ -38,7 +51,17 @@ export const joinAllRooms = (socket: any, contacts: any, showingGroups?: boolean
         console.log(error);
     }
 };
-
+export const friendRequest = (socket: any, data: any) => async (dispatch: any) => {
+    try {
+        await socket.emit(SOCKET_FRIEND_REQUEST, data);
+        // socket.removeAllListeners();
+        socket.on("SOCKET_NEW_FRIEND_REQUEST", () => {
+            console.log("friend");
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
 export const sendMessage = (socket: any, data: any) => async (dispatch: any) => {
     try {
         let currentUserInfo: any = await axios.get("/api/users/me");

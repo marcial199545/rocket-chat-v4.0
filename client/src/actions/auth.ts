@@ -10,10 +10,9 @@ import {
     CLEAR_PROFILE,
     LOGOUT,
     SOCKET_LEAVE_ROOM,
-    CLEAR_MESSAGES
+    CLEAR_MESSAGES,
 } from "./types";
 import { clearContacts } from "./contacts";
-// import { leaveRoom } from "./sockets";
 import { setAlert } from "./alert";
 
 // NOTE Register User
@@ -21,7 +20,7 @@ export const registerUser = ({
     name,
     email,
     password,
-    socket
+    socket,
 }: {
     name: string;
     email: string;
@@ -29,7 +28,7 @@ export const registerUser = ({
     socket: any;
 }) => async (dispatch: any) => {
     const config: any = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     };
     const body = { name, email, password };
     try {
@@ -37,10 +36,10 @@ export const registerUser = ({
         // TODO add the request to add the same user in the notification service, the response from the las request contains the same Object id
         await axios.post("/api/notifications", res.data, config);
         dispatch({
-            type: REGISTER_SUCCESS
+            type: REGISTER_SUCCESS,
         });
 
-        dispatch(loadUser());
+        dispatch(loadUser(socket));
         socket.connect();
     } catch (error) {
         const errors = error.response.data.errors;
@@ -52,18 +51,20 @@ export const registerUser = ({
     }
 };
 // NOTE Login User
-export const login = (email: string, password: string, socket: any) => async (dispatch: any) => {
+export const login = (email: string, password: string, socket: any) => async (
+    dispatch: any
+) => {
     const config: any = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     };
     const body = { email, password };
     try {
         await axios.post("/api/auth", body, config);
         dispatch({
-            type: LOGIN_SUCCESS
+            type: LOGIN_SUCCESS,
         });
-        dispatch(loadUser());
-        socket.connect();
+        await socket.connect();
+        dispatch(loadUser(socket));
     } catch (error) {
         const errors = error.response.data.errors;
         if (errors) {
@@ -78,11 +79,11 @@ export const logout = (socket?: any) => async (dispatch: any) => {
     try {
         await axios.delete("/api/auth");
         dispatch({ type: CLEAR_PROFILE });
-        dispatch({ type: LOGOUT });
         dispatch({ type: SOCKET_LEAVE_ROOM });
         dispatch(clearContacts());
+        dispatch({ type: LOGOUT });
         dispatch({
-            type: CLEAR_MESSAGES
+            type: CLEAR_MESSAGES,
         });
         socket.disconnect();
     } catch (error) {
@@ -90,16 +91,16 @@ export const logout = (socket?: any) => async (dispatch: any) => {
     }
 };
 //NOTE Load User
-export const loadUser = () => async (dispatch: any) => {
+export const loadUser = (socket?: any) => async (dispatch: any) => {
     try {
         const res = await axios.get("/api/auth");
         dispatch({
             type: USER_LOADED,
-            payload: res.data
+            payload: res.data,
         });
     } catch (error) {
         dispatch({
-            type: AUTH_ERROR
+            type: AUTH_ERROR,
         });
     }
 };

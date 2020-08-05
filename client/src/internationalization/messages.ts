@@ -43,7 +43,8 @@ export default defineMessages({
         "addGroup-alert-oneParticipant": "Please Add At Least One Participant",
         "addGroup-alert-validName": "Please Provide a valid Group Name",
         // SECTION Sockets
-        "socket-alert-socketJoined": "User Joined"
+        "socket-alert-socketJoined": "User Joined Conversation",
+        "socket-alert-joinedOwnRoom": "User Joined Own Room"
     },
     de: {
         //@ts-ignore
@@ -88,7 +89,8 @@ export default defineMessages({
         "addGroup-alert-oneParticipant": "Bitte fügen Sie mindestens einen Teilnehmer hinzu",
         "addGroup-alert-validName": "Bitte geben Sie einen gültigen Gruppennamen an",
         // SECTION Sockets
-        "socket-alert-socketJoined": "Benutzer beigetreten"
+        "socket-alert-socketJoined": "Der Benutzer hat sich an der Konversation beteiligt",
+        "socket-alert-joinedOwnRoom": "Benutzer beigetreten"
     },
     es: {
         //@ts-ignore
@@ -133,7 +135,8 @@ export default defineMessages({
         "addGroup-alert-oneParticipant": "Por Favor Agrega Al Menos Un Participante",
         "addGroup-alert-validName": "Por Favor Escribe Un Nombre Valido",
         // SECTION Sockets
-        "socket-alert-socketJoined": "Usuario Se Ha Unido"
+        "socket-alert-socketJoined": "Usuario Se Ha Unido A La Conversacion",
+        "socket-alert-joinedOwnRoom": "Usuario Se Unio"
     },
     ja: {
         //@ts-ignore
@@ -178,6 +181,7 @@ export default defineMessages({
         "addGroup-alert-oneParticipant": "少なくとも1人の参加者を追加してください",
         "addGroup-alert-validName": "有効なグループ名を入力してください",
         // SECTION Sockets
-        "socket-alert-socketJoined": "ユーザーが参加しました"
+        "socket-alert-socketJoined": "ユーザーが会話に参加しました",
+        "socket-alert-joinedOwnRoom": "ユーザーが参加しました"
     }
 });

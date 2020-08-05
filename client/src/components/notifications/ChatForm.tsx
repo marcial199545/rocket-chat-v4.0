@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import { sendMessage, sendGroupMessage } from "../../actions/sockets";
 // eslint-disable-next-line
 export const socket = io("localhost:5001");
-
+socket.on("SOCKET_NEW_FRIEND_REQUEST", (data: any) => {
+    console.log(`New Friend Request from ${data.email}`);
+});
 const ChatForm = ({
     currentRoom,
     participants,
